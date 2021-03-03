@@ -68,3 +68,13 @@ buffered.seek(0)
 img_byte = buffered.getvalue()
 encoded_string = base64.b64encode(img_byte).decode("utf-8")
 ```
+
+#### Декодирование из base64
+```
+byte_img = base64.b64decode(img_base64)
+# get numpy array
+img_array = cv2.imdecode(np.frombuffer(byte_img, dtype=np.uint8), 1)
+# get PIL image
+im_file = BytesIO(byte_img)
+img = Image.open(im_file)
+```
