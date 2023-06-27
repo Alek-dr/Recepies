@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "recepies"
+version = "0.1.0"
+description = ""
+authors = ["Barmin A"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+torchvision = "0.13.0"
+opencv-python = "^4.7.0"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.12.0"
+black = "^23.3.0"
+line-profiler = "^4.0.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
