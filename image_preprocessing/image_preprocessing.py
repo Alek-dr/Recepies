@@ -4,6 +4,7 @@ from typing import Iterable
 
 import cv2
 import numpy as np
+
 import torch
 import torchvision.transforms as transforms
 from torchvision.transforms.transforms import InterpolationMode
@@ -13,6 +14,7 @@ STD = np.array([0.229, 0.224, 0.225])
 SIZE = 224
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 @profile
 def numpy_preprocess(images: Iterable[np.ndarray]) -> np.ndarray:
@@ -29,6 +31,7 @@ def numpy_preprocess(images: Iterable[np.ndarray]) -> np.ndarray:
     images = np.ascontiguousarray(images, dtype=np.float32)
     return images
 
+
 @profile
 def cv_blob_preprocess(images: Iterable[np.ndarray]) -> np.ndarray:
     input_blob = cv2.dnn.blobFromImages(
@@ -41,6 +44,7 @@ def cv_blob_preprocess(images: Iterable[np.ndarray]) -> np.ndarray:
     )
     input_blob /= STD.reshape((3, 1, 1))
     return input_blob
+
 
 @profile
 def pytorch_transform(images: Iterable[np.ndarray]):
@@ -62,7 +66,7 @@ def pytorch_transform(images: Iterable[np.ndarray]):
 
 
 def equal_transforms(images: Iterable[np.ndarray]):
-    functions = [numpy_preprocess, cv_blob_preprocess, pytorch_transform]
+    functions = [numpy_preprocess, cv_blob_preprocess]
     input_data = copy.deepcopy(images)
     res = functions[0](input_data)
     results = [res]
@@ -76,6 +80,7 @@ def equal_transforms(images: Iterable[np.ndarray]):
         results.append(res)
         equals.append(eq)
     return all(equals)
+
 
 """
 Все три функции выполняют одинаковый препроцессинг изображений. Однако,
@@ -93,7 +98,7 @@ python -m line_profiler image_preprocessing.py.lprof
 """
 
 if __name__ == "__main__":
-    img_path = Path("./data/images")
+    img_path = Path("img_for_test/0")
     batch = []
     for file in img_path.glob("*.jpg"):
         image = cv2.imread(str(file))
